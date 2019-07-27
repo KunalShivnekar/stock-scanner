@@ -20,19 +20,11 @@ interface BaseView <T : LifecycleObserver> {
     fun hideLoader()
 
     /**
-     * Shows a error message on View.
-     *
-     * @param resId The resource Id of the string to show
-     * @param args  The values of placeholder in the string resource.
-     */
-    fun showError(resId: Int, vararg args: Any)
-
-    /**
      * This method shows error message on the view.
      *
-     * @param resId The resource Id of the string to show
+     * @param  error string to show
      */
-    fun showError(resId: Int)
+    fun showError(error:String)
 
     /**
      * Use this method to show progress bar on the view

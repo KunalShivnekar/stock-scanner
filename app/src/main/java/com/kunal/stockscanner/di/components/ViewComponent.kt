@@ -3,6 +3,7 @@ package com.kunal.stockscanner.di.components
 import com.kunal.stockscanner.di.modules.ViewModuleCriteria
 import com.kunal.stockscanner.di.modules.ViewModuleScans
 import com.kunal.stockscanner.di.modules.ViewModuleVariables
+import com.kunal.stockscanner.view.scans.ScansFragment
 import dagger.Subcomponent
 
 /**
@@ -16,4 +17,6 @@ interface ViewComponent {
 
         fun build(): ViewComponent
     }
+
+    fun inject(scansFragment: ScansFragment)
 }

@@ -1,6 +1,7 @@
 package com.kunal.stockscanner.di.modules
 
 import android.content.Context
+import com.google.gson.Gson
 import com.kunal.stockscanner.di.components.DataComponent
 import com.kunal.stockscanner.network.http.HttpClient
 import com.kunal.stockscanner.network.http.HttpClientImpl
@@ -11,15 +12,11 @@ import dagger.Provides
  * Created by kunal on 2019-07-26.
  */
 @Module(subcomponents = [DataComponent::class])
-class AppModule(private val context: Context) {
+class AppModule {
 
     @Provides
-    fun getContext(): Context {
-        return context
-    }
+    fun getHttpApiClient(httpClientImpl: HttpClientImpl): HttpClient = httpClientImpl
 
     @Provides
-    internal fun getHttpApiClient(httpClientImpl: HttpClientImpl): HttpClient {
-        return httpClientImpl
-    }
+    fun getGson(): Gson = Gson()
 }

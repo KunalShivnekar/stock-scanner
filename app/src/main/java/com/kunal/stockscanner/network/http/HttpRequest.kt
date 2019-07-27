@@ -5,7 +5,7 @@ package com.kunal.stockscanner.network.http
  */
 data class HttpRequest(val endpointUrl:String) {
 
-    private var headers:Map<String,String> = HashMap()
+    var headers:Map<String,String> = HashMap()
 
     constructor(endpointUrl:String, headers:Map<String,String>):this(endpointUrl){
         this.headers = headers

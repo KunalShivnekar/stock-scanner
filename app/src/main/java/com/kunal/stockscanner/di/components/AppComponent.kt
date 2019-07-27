@@ -16,8 +16,6 @@ interface AppComponent {
     interface Builder {
 
         fun build(): AppComponent
-
-        fun appModule(module: AppModule): Builder
     }
 
     val dataComponentBuilder: DataComponent.Builder
