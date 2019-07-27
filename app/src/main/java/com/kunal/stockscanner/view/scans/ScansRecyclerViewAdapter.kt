@@ -3,6 +3,7 @@ package com.kunal.stockscanner.view.scans
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import com.kunal.stockscanner.R
 
@@ -39,7 +40,11 @@ class ScansRecyclerViewAdapter(private val listener: OnScanSelectedListener) : R
             }
 
         init {
-            view.setOnClickListener{listener.onScanSelected(item!!)}
+            view.setOnClickListener(object : OnClickListener {
+                override fun onClick(v: View?) {
+                    listener.onScanSelected(item!!)
+                }
+            })
         }
     }
 

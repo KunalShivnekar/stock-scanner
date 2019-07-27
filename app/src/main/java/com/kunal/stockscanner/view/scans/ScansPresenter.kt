@@ -14,13 +14,16 @@ class ScansPresenter @Inject constructor(private val remoteDataSource: RemoteDat
 
     override fun onStart() {
         super.onStart()
+        view?.showLoader()
         remoteDataSource.getItems(object : GetItemsCallback<Scan> {
             override fun onFailure(response: Response) {
                 view?.showError(response.description)
+                view?.hideLoader()
             }
 
             override fun onSuccess(data: List<Scan>) {
                 view?.setData(data)
+                view?.hideLoader()
             }
         })
     }
