@@ -40,11 +40,7 @@ class ScansRecyclerViewAdapter(private val listener: OnScanSelectedListener) : R
             }
 
         init {
-            view.setOnClickListener(object : OnClickListener {
-                override fun onClick(v: View?) {
-                    listener.onScanSelected(item!!)
-                }
-            })
+            view.setOnClickListener { listener.onScanSelected(item!!) }
         }
     }
 

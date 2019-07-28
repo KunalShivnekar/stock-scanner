@@ -19,12 +19,11 @@ class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListen
     }
 
     override fun onScanSelected(scan: Scan) {
-        val criteriaFragment = CriteriaFragment.newInstance()
+        val criteriaFragment = CriteriaFragment.newInstance(scan)
         supportFragmentManager.beginTransaction()
             .replace(R.id.root, criteriaFragment)
             .addToBackStack(null)
             .commit()
-        criteriaFragment.setScan(scan)
     }
 
     override fun onCriteriaInteraction(scan: Scan) {

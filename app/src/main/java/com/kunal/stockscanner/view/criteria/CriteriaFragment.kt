@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_criteria.view.criteria_list
 import kotlinx.android.synthetic.main.fragment_criteria.view.scan_name
 import kotlinx.android.synthetic.main.fragment_criteria.view.scan_tag
 
-private const val ARG_SCAN = "param1"
+private const val ARG_SCAN = "ARG_SCAN"
 
 /**
  * A simple [Fragment] subclass.
@@ -34,6 +34,8 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
 
     private val criteriaAdapter = CriteriaAdapter(this)
 
+    private val scan: Scan by lazy { requireNotNull(arguments).getParcelable(ARG_SCAN) as Scan }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_criteria, container, false)
     }
@@ -46,6 +48,8 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
             layoutManager = LinearLayoutManager(context)
             adapter = criteriaAdapter
         }
+
+        setScan(scan)
     }
 
     override fun onAttach(context: Context) {
@@ -66,7 +70,7 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
 
     }
 
-    fun setScan(scan: Scan){
+    private fun setScan(scan: Scan){
         view?.let {
             it.scan_name?.text = scan.name
             it.scan_tag?.text = scan.tag
@@ -91,6 +95,12 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
 
     companion object {
         @JvmStatic
-        fun newInstance() = CriteriaFragment()
+        fun newInstance(scan:Scan):CriteriaFragment{
+            val fragment = CriteriaFragment()
+            val bundle = Bundle()
+            bundle.putParcelable(ARG_SCAN, scan)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }
