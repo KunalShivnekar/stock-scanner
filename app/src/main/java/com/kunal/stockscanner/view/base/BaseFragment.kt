@@ -1,5 +1,6 @@
 package com.kunal.stockscanner.view.base
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.kunal.stockscanner.R
 import com.kunal.stockscanner.config.StockScannerApplication
@@ -19,7 +21,7 @@ import javax.inject.Inject
 abstract class BaseFragment<T:BasePresenter<*>>:Fragment(),BaseView<T> {
 
     protected lateinit var presenter:T
-    private lateinit var progressBar: ProgressBar
+    private lateinit var progressDialog: ProgressDialog
     protected lateinit var injector: ViewComponent
 
     override fun onAttach(context: Context) {
@@ -31,7 +33,11 @@ abstract class BaseFragment<T:BasePresenter<*>>:Fragment(),BaseView<T> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = ProgressBar(context,null, android.R.attr.indeterminateProgressStyle)
+        progressDialog = ProgressDialog(context)
+        with(progressDialog) {
+            setCancelable(false)
+            setMessage("Loading..")
+        }
     }
 
     override fun onDestroy() {
@@ -58,14 +64,14 @@ abstract class BaseFragment<T:BasePresenter<*>>:Fragment(),BaseView<T> {
      * Use this method to show progress bar on the view
      */
     override fun showLoader() {
-        progressBar.visibility = View.VISIBLE
+        progressDialog.show()
     }
 
     /**
      * Use this method to hide progress bar on the view
      */
     override fun hideLoader() {
-        progressBar.visibility = View.GONE
+        progressDialog.hide()
     }
 
     private fun showToast(text: String) {
