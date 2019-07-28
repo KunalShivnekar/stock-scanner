@@ -57,7 +57,7 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
         if (context is OnCriteriaInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnCriteriaInteractionListener")
+            throw RuntimeException("$context must implement OnCriteriaInteractionListener")
         }
     }
 
@@ -67,7 +67,7 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
     }
 
     override fun onVariableSelected(variable: Variable) {
-
+        listener?.onVariableSelected(variable)
     }
 
     private fun setScan(scan: Scan){
@@ -90,17 +90,15 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
      * for more information.
      */
     interface OnCriteriaInteractionListener {
-        fun onCriteriaInteraction(scan:Scan)
+        fun onVariableSelected(variable: Variable)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(scan:Scan):CriteriaFragment{
-            val fragment = CriteriaFragment()
-            val bundle = Bundle()
-            bundle.putParcelable(ARG_SCAN, scan)
-            fragment.arguments = bundle
-            return fragment
+        fun newInstance(scan:Scan) = CriteriaFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(ARG_SCAN, scan)
+            }
         }
     }
 }

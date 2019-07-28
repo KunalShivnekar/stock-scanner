@@ -7,6 +7,7 @@ import com.kunal.stockscanner.view.criteria.CriteriaFragment
 import com.kunal.stockscanner.view.scans.ScansFragment
 import com.kunal.stockscanner.view.scans.ScansFragment.Companion
 import com.kunal.stockscanner.view.scans.model.Scan
+import com.kunal.stockscanner.view.variable.model.Variable
 
 class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListener, CriteriaFragment.OnCriteriaInteractionListener {
 
@@ -14,7 +15,7 @@ class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction()
-            .add(R.id.root, ScansFragment())
+            .add(R.id.root, ScansFragment.newInstance())
             .commit()
     }
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListen
             .commit()
     }
 
-    override fun onCriteriaInteraction(scan: Scan) {
+    override fun onVariableSelected(variable: Variable) {
 
     }
 }

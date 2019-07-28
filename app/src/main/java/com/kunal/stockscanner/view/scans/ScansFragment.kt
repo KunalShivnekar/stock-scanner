@@ -43,7 +43,7 @@ class ScansFragment : BaseFragment<ScansContract.Presenter>(), ScansContract.Vie
         if (context is OnScansInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnScansInteractionListener")
+            throw RuntimeException("$context must implement OnScansInteractionListener")
         }
     }
 
