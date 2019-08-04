@@ -8,4 +8,5 @@ import android.os.Parcelable
 interface Variable:Parcelable {
     val key:String
     val type:String
+    val default:String
 }

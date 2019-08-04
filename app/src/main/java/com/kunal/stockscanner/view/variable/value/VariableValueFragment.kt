@@ -2,8 +2,6 @@ package com.kunal.stockscanner.view.variable.value
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,19 +10,20 @@ import android.view.ViewGroup
 import com.kunal.stockscanner.R
 import com.kunal.stockscanner.view.base.BaseFragment
 import com.kunal.stockscanner.view.variable.model.VariableValue
+import kotlinx.android.synthetic.main.fragment_variable_indicator.view.parameter_name
 
 private const val ARG_VARIABLE = "ARG_VARIABLE"
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [VariableValueFragment.OnVariableInteractionListener] interface.
+ * [VariableValueFragment.OnVariableValueInteractionListener] interface.
  */
 class VariableValueFragment : BaseFragment<VariableValueContract.Presenter>(), VariableValueContract.View, VariableValueAdapter.OnVariableValueSelectedListener {
 
-    private var listener: OnVariableInteractionListener? = null
+    private var listener: OnVariableValueInteractionListener? = null
 
-    val variableValue: VariableValue by lazy { requireNotNull(arguments).getParcelable(ARG_VARIABLE) as VariableValue }
+    private val variableValue: VariableValue by lazy { requireNotNull(arguments).getParcelable(ARG_VARIABLE) as VariableValue }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_variablevalue, container, false) as RecyclerView
@@ -40,10 +39,10 @@ class VariableValueFragment : BaseFragment<VariableValueContract.Presenter>(), V
         super.onAttach(context)
         injector.inject(this)
         presenter.attachView(this,this)
-        if (context is OnVariableInteractionListener) {
+        if (context is OnVariableValueInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException("$context must implement OnVariableInteractionListener")
+            throw RuntimeException("$context must implement OnVariableValueInteractionListener")
         }
     }
 
@@ -67,9 +66,9 @@ class VariableValueFragment : BaseFragment<VariableValueContract.Presenter>(), V
      * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-    interface OnVariableInteractionListener {
+    interface OnVariableValueInteractionListener {
 
-        fun onVariableFragmentInteraction()
+        fun onVariableValueFragmentInteraction()
     }
 
     companion object {

@@ -14,4 +14,7 @@ data class VariableIndicator(override val key: String,
     val defaultValue:Int):Variable {
 
     override val type: String = "indicator"
+
+    override val default: String
+        get() = defaultValue.toString()
 }

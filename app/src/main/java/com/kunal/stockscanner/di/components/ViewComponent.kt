@@ -5,6 +5,7 @@ import com.kunal.stockscanner.di.modules.ViewModuleScans
 import com.kunal.stockscanner.di.modules.ViewModuleVariables
 import com.kunal.stockscanner.view.criteria.CriteriaFragment
 import com.kunal.stockscanner.view.scans.ScansFragment
+import com.kunal.stockscanner.view.variable.indicator.VariableIndicatorFragment
 import com.kunal.stockscanner.view.variable.value.VariableValueFragment
 import dagger.Subcomponent
 
@@ -25,4 +26,6 @@ interface ViewComponent {
     fun inject(criteriaFragment: CriteriaFragment)
 
     fun inject(variableValueFragment: VariableValueFragment)
+
+    fun inject(variableIndicatorFragment: VariableIndicatorFragment)
 }

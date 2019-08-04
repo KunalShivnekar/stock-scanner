@@ -9,4 +9,7 @@ import kotlinx.android.parcel.Parcelize
 data class VariableValue(override val key: String, val values:List<Int>):Variable {
 
     override val type: String = "value"
+
+    override val default: String
+        get() = values[0].toString()
 }

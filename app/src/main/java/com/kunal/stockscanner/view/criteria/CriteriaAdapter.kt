@@ -59,20 +59,28 @@ class CriteriaAdapter(private val listener: OnVariableSelectedListener) : Recycl
     }
 
     private fun buildVariableText(value:CriteriaVariable):CharSequence{
-        val spannableString = SpannableString(value.text)
-
-        val variableArray = value.text.split(" ")
+        var variableText = value.text
+        val variableArray = value.text.split(" ").toMutableList()
+        for (word in variableArray){
+            if(word.matches("[\$][0-9]+".toRegex())){
+                variableText = variableText.replace(word,value.variableMap.getValue(word).default)
+            }
+        }
+        val spannableString = SpannableString(variableText)
         var index = 0
         for (word in variableArray){
             if(word.matches("[\$][0-9]+".toRegex())){
+                val variable = value.variableMap.getValue(word)
                 val clickableSpan = object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        listener.onVariableSelected(value.variableMap.getValue(word))
+                        listener.onVariableSelected(variable)
                     }
                 }
-                spannableString.setSpan(clickableSpan,index,index+word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(clickableSpan,index,index+variable.default.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                index += variable.default.length+1
+            } else {
+                index += word.length + 1
             }
-            index += word.length+1
         }
         return spannableString
     }
