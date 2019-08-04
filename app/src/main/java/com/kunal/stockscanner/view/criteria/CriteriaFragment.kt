@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.kunal.stockscanner.R
+import com.kunal.stockscanner.view.base.BaseFragment
 import com.kunal.stockscanner.view.scans.model.Scan
 import com.kunal.stockscanner.view.variable.model.Variable
 import kotlinx.android.synthetic.main.fragment_criteria.view.criteria_list
@@ -28,13 +29,13 @@ private const val ARG_SCAN = "ARG_SCAN"
  * create an instance of this fragment.
  *
  */
-class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener {
+class CriteriaFragment : BaseFragment<CriteriaContract.Presenter>(), CriteriaContract.View, CriteriaAdapter.OnVariableSelectedListener {
 
     private var listener: OnCriteriaInteractionListener? = null
 
     private val criteriaAdapter = CriteriaAdapter(this)
 
-    private val scan: Scan by lazy { requireNotNull(arguments).getParcelable(ARG_SCAN) as Scan }
+    override val scan: Scan by lazy { requireNotNull(arguments).getParcelable(ARG_SCAN) as Scan }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_criteria, container, false)
@@ -48,12 +49,12 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
             layoutManager = LinearLayoutManager(context)
             adapter = criteriaAdapter
         }
-
-        setScan(scan)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        injector.inject(this)
+        presenter.attachView(this,this)
         if (context is OnCriteriaInteractionListener) {
             listener = context
         } else {
@@ -70,7 +71,7 @@ class CriteriaFragment : Fragment(), CriteriaAdapter.OnVariableSelectedListener 
         listener?.onVariableSelected(variable)
     }
 
-    private fun setScan(scan: Scan){
+    override fun setScan(scan: Scan){
         view?.let {
             it.scan_name?.text = scan.name
             it.scan_tag?.text = scan.tag
