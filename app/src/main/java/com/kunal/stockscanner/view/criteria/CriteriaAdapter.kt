@@ -1,8 +1,15 @@
 package com.kunal.stockscanner.view.criteria
 
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.kunal.stockscanner.R
 import com.kunal.stockscanner.view.criteria.model.Criteria
@@ -12,6 +19,7 @@ import com.kunal.stockscanner.view.scans.model.Scan
 import com.kunal.stockscanner.view.variable.model.Variable
 import kotlinx.android.synthetic.main.scan_item.view.content
 import kotlinx.android.synthetic.main.scan_item.view.name
+import java.util.regex.Pattern
 
 /**
  * Created by kunal on 2019-07-28.
@@ -41,10 +49,32 @@ class CriteriaAdapter(private val listener: OnVariableSelectedListener) : Recycl
                 field = value
                 when (value) {
                     is CriteriaPlainText -> view.name.text = value.text
-                    is CriteriaVariable -> view.name.text = value.text
+                    is CriteriaVariable ->{
+                        view.name.text = buildVariableText(value)
+                        view.name.movementMethod = LinkMovementMethod.getInstance()
+                    }
                 }
 
             }
+    }
+
+    private fun buildVariableText(value:CriteriaVariable):CharSequence{
+        val spannableString = SpannableString(value.text)
+
+        val variableArray = value.text.split(" ")
+        var index = 0
+        for (word in variableArray){
+            if(word.matches("[\$][0-9]+".toRegex())){
+                val clickableSpan = object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        listener.onVariableSelected(value.variableMap.getValue(word))
+                    }
+                }
+                spannableString.setSpan(clickableSpan,index,index+word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            index += word.length+1
+        }
+        return spannableString
     }
 
     interface OnVariableSelectedListener {

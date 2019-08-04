@@ -8,8 +8,11 @@ import com.kunal.stockscanner.view.scans.ScansFragment
 import com.kunal.stockscanner.view.scans.ScansFragment.Companion
 import com.kunal.stockscanner.view.scans.model.Scan
 import com.kunal.stockscanner.view.variable.model.Variable
+import com.kunal.stockscanner.view.variable.model.VariableIndicator
+import com.kunal.stockscanner.view.variable.model.VariableValue
+import com.kunal.stockscanner.view.variable.value.VariableValueFragment
 
-class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListener, CriteriaFragment.OnCriteriaInteractionListener {
+class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListener, CriteriaFragment.OnCriteriaInteractionListener, VariableValueFragment.OnVariableInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,18 @@ class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListen
     }
 
     override fun onVariableSelected(variable: Variable) {
+        val fragment = VariableValueFragment.newInstance(variable as VariableValue)
+        /*when(variable){
+            is VariableValue -> VariableValueFragment.newInstance(variable)
+            is VariableIndicator -> VariableValueFragment.newInstance(variable)
+        }*/
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.root, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onVariableFragmentInteraction() {
 
     }
 }
