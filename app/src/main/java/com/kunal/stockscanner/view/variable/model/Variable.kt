@@ -9,4 +9,5 @@ interface Variable:Parcelable {
     val key:String
     val type:String
     val default:String
+    var selected:String
 }

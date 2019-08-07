@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.kunal.stockscanner.R
 import com.kunal.stockscanner.view.base.BaseFragment
+import com.kunal.stockscanner.view.criteria.model.CriteriaVariable
 import com.kunal.stockscanner.view.scans.model.Scan
 import com.kunal.stockscanner.view.variable.model.Variable
 import kotlinx.android.synthetic.main.fragment_criteria.view.criteria_list
@@ -67,8 +68,12 @@ class CriteriaFragment : BaseFragment<CriteriaContract.Presenter>(), CriteriaCon
         listener = null
     }
 
-    override fun onVariableSelected(variable: Variable) {
-        listener?.onVariableSelected(variable)
+    override fun onVariableSelected(criteria: CriteriaVariable,variable: Variable) {
+        listener?.onVariableSelected(criteria,variable)
+    }
+
+    fun updateVariableValue(criteria: CriteriaVariable,variable: Variable){
+        criteriaAdapter.updateVariableValue(criteria,variable)
     }
 
     override fun setScan(scan: Scan){
@@ -91,7 +96,7 @@ class CriteriaFragment : BaseFragment<CriteriaContract.Presenter>(), CriteriaCon
      * for more information.
      */
     interface OnCriteriaInteractionListener {
-        fun onVariableSelected(variable: Variable)
+        fun onVariableSelected(criteria: CriteriaVariable,variable: Variable)
     }
 
     companion object {

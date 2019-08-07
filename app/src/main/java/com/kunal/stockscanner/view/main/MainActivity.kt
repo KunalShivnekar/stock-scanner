@@ -8,6 +8,7 @@ import com.kunal.stockscanner.view.base.BasePresenter
 import com.kunal.stockscanner.view.base.BasePresenterImpl
 import com.kunal.stockscanner.view.base.BaseView
 import com.kunal.stockscanner.view.criteria.CriteriaFragment
+import com.kunal.stockscanner.view.criteria.model.CriteriaVariable
 import com.kunal.stockscanner.view.scans.ScansFragment
 import com.kunal.stockscanner.view.scans.model.Scan
 import com.kunal.stockscanner.view.variable.indicator.VariableIndicatorFragment
@@ -18,6 +19,8 @@ import com.kunal.stockscanner.view.variable.value.VariableValueFragment
 
 class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListener, CriteriaFragment.OnCriteriaInteractionListener, VariableValueFragment.OnVariableValueInteractionListener, VariableIndicatorFragment.OnVariableIndicatorInteractionListener {
 
+    lateinit var criteriaFragment:CriteriaFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,18 +30,23 @@ class MainActivity : AppCompatActivity(), ScansFragment.OnScansInteractionListen
     }
 
     override fun onScanSelected(scan: Scan) {
-        addFragmentToBackStack(CriteriaFragment.newInstance(scan))
+        criteriaFragment = CriteriaFragment.newInstance(scan)
+        addFragmentToBackStack(criteriaFragment)
     }
 
-    override fun onVariableSelected(variable: Variable) {
+    override fun onVariableSelected(criteria: CriteriaVariable,variable: Variable) {
         when(variable){
-            is VariableValue -> addFragmentToBackStack(VariableValueFragment.newInstance(variable))
-            is VariableIndicator -> addFragmentToBackStack(VariableIndicatorFragment.newInstance(variable))
+            is VariableValue ->{
+                addFragmentToBackStack(VariableValueFragment.newInstance(criteria, variable))
+            }
+            is VariableIndicator -> {
+
+                addFragmentToBackStack(VariableIndicatorFragment.newInstance(criteria, variable))}
         }
     }
 
-    override fun onVariableValueFragmentInteraction() {
-        // handle variable value selection here
+    override fun onVariableValueFragmentInteraction(criteria: CriteriaVariable,variable: Variable) {
+        criteriaFragment.updateVariableValue(criteria,variable)
     }
 
     override fun onVariableIndicatorFragmentInteraction() {

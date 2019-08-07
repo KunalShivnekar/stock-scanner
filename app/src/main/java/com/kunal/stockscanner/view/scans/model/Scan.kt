@@ -11,5 +11,5 @@ interface Scan:Parcelable {
     val name:String
     val tag:String
     val color:String
-    val criteriaList:List<Criteria>
+    val criteriaList:MutableList<Criteria>
 }

@@ -12,4 +12,4 @@ data class ScanDefault(
     override val name: String,
     override val tag: String,
     override val color: String,
-    override val criteriaList: List<Criteria>):Scan
+    override val criteriaList: MutableList<Criteria>):Scan

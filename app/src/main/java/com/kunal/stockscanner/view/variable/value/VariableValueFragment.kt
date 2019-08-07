@@ -9,10 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.kunal.stockscanner.R
 import com.kunal.stockscanner.view.base.BaseFragment
+import com.kunal.stockscanner.view.criteria.model.CriteriaVariable
+import com.kunal.stockscanner.view.variable.model.Variable
 import com.kunal.stockscanner.view.variable.model.VariableValue
+import kotlinx.android.synthetic.clearFindViewByIdCache
 import kotlinx.android.synthetic.main.fragment_variable_indicator.view.parameter_name
 
 private const val ARG_VARIABLE = "ARG_VARIABLE"
+private const val ARG_CRITERIA = "ARG_CRITERIA"
 
 /**
  * A fragment representing a list of Items.
@@ -25,12 +29,16 @@ class VariableValueFragment : BaseFragment<VariableValueContract.Presenter>(), V
 
     private val variableValue: VariableValue by lazy { requireNotNull(arguments).getParcelable(ARG_VARIABLE) as VariableValue }
 
+    private val criteria: CriteriaVariable by lazy { requireNotNull(arguments).getParcelable(ARG_CRITERIA) as CriteriaVariable }
+
+    lateinit var variableValueAdapter: VariableValueAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_variablevalue, container, false) as RecyclerView
-
+        variableValueAdapter = VariableValueAdapter(variableValue.values, this@VariableValueFragment)
         with(view) {
             layoutManager = LinearLayoutManager(context)
-            adapter = VariableValueAdapter(variableValue.values, this@VariableValueFragment)
+            adapter = variableValueAdapter
         }
         return view
     }
@@ -52,8 +60,12 @@ class VariableValueFragment : BaseFragment<VariableValueContract.Presenter>(), V
     }
 
     override fun onVariableValueSelected(value: Int) {
-
+        variableValue.selected = value.toString()
+        listener?.onVariableValueFragmentInteraction(criteria, variableValue)
+        activity?.onBackPressed()
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -68,15 +80,16 @@ class VariableValueFragment : BaseFragment<VariableValueContract.Presenter>(), V
      */
     interface OnVariableValueInteractionListener {
 
-        fun onVariableValueFragmentInteraction()
+        fun onVariableValueFragmentInteraction(criteria: CriteriaVariable,variable: Variable)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(variableValue: VariableValue) =
+        fun newInstance(criteria: CriteriaVariable, variableValue: VariableValue) =
             VariableValueFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_VARIABLE, variableValue)
+                    putParcelable(ARG_CRITERIA, criteria)
                 }
             }
     }

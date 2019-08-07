@@ -36,6 +36,10 @@ class VariableValueAdapter( private val values: List<Int>, private val listener:
             field = value
             valueView.text = value.toString()
         }
+
+        init {
+            valueView.setOnClickListener { listener.onVariableValueSelected(variableValue) }
+        }
     }
     
     interface OnVariableValueSelectedListener{

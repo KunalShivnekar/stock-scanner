@@ -10,12 +10,14 @@ import android.view.ViewGroup
 
 import com.kunal.stockscanner.R
 import com.kunal.stockscanner.view.base.BaseFragment
+import com.kunal.stockscanner.view.criteria.model.CriteriaVariable
 import com.kunal.stockscanner.view.variable.model.VariableIndicator
 import kotlinx.android.synthetic.main.fragment_variable_indicator.view.indicator_name
 import kotlinx.android.synthetic.main.fragment_variable_indicator.view.parameter_name
 import kotlinx.android.synthetic.main.fragment_variable_indicator.view.parameter_value
 
 private const val ARG_VARIABLE = "ARG_VARIABLE"
+private const val ARG_CRITERIA = "ARG_CRITERIA"
 
 /**
  * A simple [Fragment] subclass.
@@ -31,6 +33,8 @@ class VariableIndicatorFragment :BaseFragment<VariableIndicatorContract.Presente
     private var listener: OnVariableIndicatorInteractionListener? = null
 
     override val variableIndicator:VariableIndicator by lazy { requireNotNull(arguments).getParcelable(ARG_VARIABLE) as VariableIndicator }
+
+    private val criteria: CriteriaVariable by lazy { requireNotNull(arguments).getParcelable(ARG_CRITERIA) as CriteriaVariable }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -86,10 +90,11 @@ class VariableIndicatorFragment :BaseFragment<VariableIndicatorContract.Presente
          * @return A new instance of fragment VariableIndicatorFragment.
          */
         @JvmStatic
-        fun newInstance(variableIndicator: VariableIndicator) =
+        fun newInstance(criteria: CriteriaVariable, variableIndicator: VariableIndicator) =
             VariableIndicatorFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_VARIABLE, variableIndicator)
+                    putParcelable(ARG_CRITERIA, criteria)
                 }
             }
     }

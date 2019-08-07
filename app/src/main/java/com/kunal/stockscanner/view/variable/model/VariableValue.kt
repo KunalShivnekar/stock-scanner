@@ -12,4 +12,5 @@ data class VariableValue(override val key: String, val values:List<Int>):Variabl
 
     override val default: String
         get() = values[0].toString()
+    override var selected: String = default
 }

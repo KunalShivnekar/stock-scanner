@@ -17,4 +17,6 @@ data class VariableIndicator(override val key: String,
 
     override val default: String
         get() = defaultValue.toString()
+
+    override var selected: String = default
 }

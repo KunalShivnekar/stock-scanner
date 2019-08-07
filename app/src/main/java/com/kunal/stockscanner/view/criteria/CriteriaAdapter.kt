@@ -26,7 +26,7 @@ import java.util.regex.Pattern
  */
 class CriteriaAdapter(private val listener: OnVariableSelectedListener) : RecyclerView.Adapter<CriteriaAdapter.CriteriaViewHolder>() {
 
-    var contentList = listOf<Criteria>()
+    var contentList = mutableListOf<Criteria>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -63,7 +63,7 @@ class CriteriaAdapter(private val listener: OnVariableSelectedListener) : Recycl
         val variableArray = value.text.split(" ").toMutableList()
         for (word in variableArray){
             if(word.matches("[\$][0-9]+".toRegex())){
-                variableText = variableText.replace(word,value.variableMap.getValue(word).default)
+                variableText = variableText.replace(word,value.variableMap.getValue(word).selected)
             }
         }
         val spannableString = SpannableString(variableText)
@@ -73,11 +73,11 @@ class CriteriaAdapter(private val listener: OnVariableSelectedListener) : Recycl
                 val variable = value.variableMap.getValue(word)
                 val clickableSpan = object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        listener.onVariableSelected(variable)
+                        listener.onVariableSelected(value, variable)
                     }
                 }
-                spannableString.setSpan(clickableSpan,index,index+variable.default.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                index += variable.default.length+1
+                spannableString.setSpan(clickableSpan,index,index+variable.selected.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                index += variable.selected.length+1
             } else {
                 index += word.length + 1
             }
@@ -85,7 +85,15 @@ class CriteriaAdapter(private val listener: OnVariableSelectedListener) : Recycl
         return spannableString
     }
 
+    fun updateVariableValue(criteria: CriteriaVariable,variable: Variable){
+        criteria.variableMap[variable.key]?.selected = variable.selected
+        var i = contentList.indexOf(criteria)
+        contentList.removeAt(i)
+        contentList.add(i,criteria)
+        notifyDataSetChanged()
+    }
+
     interface OnVariableSelectedListener {
-        fun onVariableSelected(variable: Variable)
+        fun onVariableSelected(criteria: CriteriaVariable, variable: Variable)
     }
 }
